@@ -7,7 +7,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI="mysql://root:mysql@127.0.0.1:3306/information27"
     SQLALCHEMY_TRACK_MODIFICATIONS=False
     REDIS_HOST='127.0.0.1'
-    REDIS_PORT='6739'
+    REDIS_PORT='6379'
     # 指定 session 保存到 redis 中
     SESSION_TYPE='redis'
     SESSION_USER_SIGNER=True

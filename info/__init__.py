@@ -1,6 +1,4 @@
-
 from logging.handlers import RotatingFileHandler
-
 import logging
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -10,12 +8,13 @@ from flask.ext.session import Session
 from config import config
 
 
-from info.modules.index import index_blu
-
 # 初始化数据库
 # 在flask很多的扩展里面都可以先初始化扩展对象，然后再去调用init_app方法去初始化
 db = SQLAlchemy()
-redis_store=None
+# 给变量加一个注释，只是给开发人员使用的   另一中指定：redis_store:StrictRedis=None
+redis_store=None #  type:StrictRedis
+
+
 def setup_log(config_name):
     # 设置日志的记录等级
     logging.basicConfig(level=config[config_name].LOG_LEVEL) # 调试debug级
@@ -48,7 +47,9 @@ def create_app(config_name):
     CSRFProtect(app)
     Session(app)
 
+
     # 注册蓝图
+    from info.modules.index import index_blu
     app.register_blueprint(index_blu)
 
     return app
