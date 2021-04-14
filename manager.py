@@ -1,28 +1,19 @@
-from redis import StrictRedis
-from flask import Flask
-# extend拓展
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.wtf import CSRFProtect
 
-class Config(object):
-    DEBUG=True
-    SQLALCHEMY_DATABASE_URI="mysql://root:mysql@127.0.0.1:3306/information27"
-    SQLALCHEMY_TRACK_MODIFICATIONS=False
-    REDIS_HOST='127.0.0.1'
-    REDIS_PORT='6739'
+# 数据库迁移
+from flask_script import Manager
+from  flask_migrate import Migrate,MigrateCommand
+from info import app,db
 
 
-app = Flask(__name__)
-# 加载配置
-app.config.from_object(Config)
 
-# 初始化数据库
-db=SQLAlchemy(app)
-# 初始化redis存储对象
-redis_store=StrictRedis(host=Config.REDIS_HOST,port=Config.REDIS_PORT)
-# 开启当前项目 CSRF 保护
-CSRFProtect(app)
+manager=Manager(app)
 
+# 将app和db关联
+#第一个参数是Flask的实例，第二个参数是Sqlalchemy数据库实例
+Migrate(app,db)
+# 将迁移命令添加到manager中,
+# #manager是Flask-Script的实例，这条语句在flask-Script中添加一个db命令
+manager.add_command('db',MigrateCommand)
 
 @app.route("/")
 def index():
@@ -30,4 +21,5 @@ def index():
 
 
 if __name__ == "__main__":
-     app.run()
+     # app.run()
+    manager.run()
