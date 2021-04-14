@@ -1,3 +1,4 @@
+import logging
 from redis import StrictRedis
 
 class Config(object):
@@ -15,19 +16,24 @@ class Config(object):
     SESSION_PERMANENT=False
     PERMANENT_SESSION_LIFETIME=86400*2
 
+    LOG_LEVEL=logging.DEBUG
+
 class DevelopmentConfig(Config):
     DEBUG = True
 
+
+
 class ProductionConfig(Config):
     DEBUG = False
-
+    LOG_LEVEL = logging.WARNING
 
 class TestingConfig(Config):
     DEBUG = True
     TESTING=True
 
+
 config={
-    'development':DevelopmentConfig,
-    'production':ProductionConfig,
-    'testing':TestingConfig
+    "development":DevelopmentConfig,
+    "production":ProductionConfig,
+    "testing":TestingConfig
 }
