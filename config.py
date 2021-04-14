@@ -1,4 +1,5 @@
 from redis import StrictRedis
+
 class Config(object):
     # DEBUG=True
     SECRET_KEY='+hUTrmUMTP1ZtMZ1XPRe3jNDnvToMNvLo96EvT5mQx3QRh72TETgP4MzQKCQ8EUl'
