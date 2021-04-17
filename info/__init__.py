@@ -11,6 +11,8 @@ from config import config
 
 # 初始化数据库
 # 在flask很多的扩展里面都可以先初始化扩展对象，然后再去调用init_app方法去初始化
+from info.utils.common import to_index_class
+
 db = SQLAlchemy()
 # 给变量加一个注释，只是给开发人员使用的   另一中指定：redis_store:StrictRedis=None
 redis_store=None #  type:StrictRedis
@@ -50,6 +52,11 @@ def create_app(config_name):
     # ajax请求的时候添加一个scrf_token
     CSRFProtect(app)
     Session(app)
+    # 添加自定义过滤器
+    app.add_template_filter(to_index_class,'index_class')
+
+
+
 
     @app.after_request
     def after_response(response):
@@ -57,6 +64,9 @@ def create_app(config_name):
         csrf_token=generate_csrf()
         response.set_cookie('csrf_token',csrf_token)
         return response
+
+
+
 
 
     # 注册蓝图
