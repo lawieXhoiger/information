@@ -42,9 +42,9 @@ def create_app(config_name):
 
     global redis_store
     # 初始化redis存储对象,缓存的数据用到redis_store
-    redis_store=StrictRedis(host=config[config_name].REDIS_HOST,port=config[config_name].REDIS_PORT)
+    redis_store=StrictRedis(host=config[config_name].REDIS_HOST,port=config[config_name].REDIS_PORT,decode_responses=True)
     # 开启当前项目 CSRF 保护
-    CSRFProtect(app)
+    # CSRFProtect(app)
     Session(app)
 
 
