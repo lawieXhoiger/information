@@ -1,6 +1,6 @@
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-
+# security安全     generate_password_hash生成密码的加密
 from info import constants
 from . import db
 
@@ -63,7 +63,7 @@ class User(BaseModel, db.Model):
     def password(self, value):
         # self.password_hash = 对value加密
         self.password_hash = generate_password_hash(value)
-
+    # werkzeug.security里面提供了一个check_password方法进行校验输入密和加密的密码是否相等
     def check_password(self, password):
         """校验密码"""
         return check_password_hash(self.password_hash, password)
