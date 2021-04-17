@@ -3,6 +3,7 @@ import logging
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.wtf import CSRFProtect
+from flask.ext.wtf.csrf import generate_csrf
 from redis import StrictRedis
 from flask.ext.session import Session
 from config import config
@@ -43,9 +44,19 @@ def create_app(config_name):
     global redis_store
     # 初始化redis存储对象,缓存的数据用到redis_store
     redis_store=StrictRedis(host=config[config_name].REDIS_HOST,port=config[config_name].REDIS_PORT,decode_responses=True)
-    # 开启当前项目 CSRF 保护
-    # CSRFProtect(app)
+    # 开启当前项目 CSRF 保护,并且可以自动对比cookie数据的scrf_token和表单里的csrf_token
+    # 我们需要1.在返回响应时候往cookie中添加csrf_token
+    # 2.在表单中添加一个隐藏的csrf_token,目前登录注册使用的是ajax,所以可以在
+    # ajax请求的时候添加一个scrf_token
+    CSRFProtect(app)
     Session(app)
+
+    @app.after_request
+    def after_response(response):
+        # 设置一个cookie
+        csrf_token=generate_csrf()
+        response.set_cookie('csrf_token',csrf_token)
+        return response
 
 
     # 注册蓝图

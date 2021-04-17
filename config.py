@@ -6,6 +6,10 @@ class Config(object):
     SECRET_KEY='+hUTrmUMTP1ZtMZ1XPRe3jNDnvToMNvLo96EvT5mQx3QRh72TETgP4MzQKCQ8EUl'
     SQLALCHEMY_DATABASE_URI="mysql://root:mysql@127.0.0.1:3306/information27"
     SQLALCHEMY_TRACK_MODIFICATIONS=False
+    # 在请求结束时,如果指定此配置,数据库属性修改以后自动提交(commit)数据
+    SQLALCHEMY_COMMIT_ON_TEARDOWN=True
+
+
     REDIS_HOST='127.0.0.1'
     REDIS_PORT='6379'
     # 指定 session 保存到 redis 中
