@@ -31,7 +31,6 @@ def setup_log(config_name):
     logging.getLogger().addHandler(file_log_handler)
 
 
-
 # create_app相当于工厂方法
 def create_app(config_name):
     # 配置日志,并且传入配置名字，以便能获取到指定配置所对应的日志等级
@@ -56,8 +55,6 @@ def create_app(config_name):
     app.add_template_filter(to_index_class,'index_class')
 
 
-
-
     @app.after_request
     def after_response(response):
         # 设置一个cookie
@@ -66,14 +63,15 @@ def create_app(config_name):
         return response
 
 
-
-
-
     # 注册蓝图
     from info.modules.index import index_blu
     app.register_blueprint(index_blu)
 
     from info.modules.passport import passport_blu
     app.register_blueprint(passport_blu)
+
+    from info.modules.news import news_blu
+    app.register_blueprint(news_blu)
+
 
     return app
