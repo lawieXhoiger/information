@@ -1,6 +1,8 @@
 from logging.handlers import RotatingFileHandler
 import logging
 from flask import Flask
+from flask import g
+from flask import render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.wtf import CSRFProtect
 from flask.ext.wtf.csrf import generate_csrf
@@ -56,7 +58,17 @@ def create_app(config_name):
     from info.utils.common import do_index_class
     app.add_template_filter(do_index_class, "index_class")
 
-
+    # 捕获404页面错误
+    from info.utils.common import user_login_data
+    @app.errorhandler(404)
+    @user_login_data
+    # e接收404错误
+    def page_not_fount(e):
+        user=g.user
+        data={
+            "user":user.to_dict() if user else None
+        }
+        return render_template("news/404.html",data=data)
 
     @app.after_request
     def after_response(response):
