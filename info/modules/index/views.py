@@ -29,8 +29,8 @@ def news_list():
         current_app.logger.error(e)
         return jsonify(errno=RET.PARAMERR,errmsg="输入参数有误")
 
-    # 3.查询数据
-    filters=[]
+    # 3.查询数据 查询审核通过的数据
+    filters=[News.status==0]
     if cid!=1: #查询的不是最新数据
 
         filters.append(News.category_id==cid)
